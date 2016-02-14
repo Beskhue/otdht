@@ -19,6 +19,9 @@ class BloomFilter:
         self.bloom = [0] * (self.M/8)
         
     def insertIP(self, ip):
+        """
+        Insert an IP into the bloom filter.
+        """
         # IP to bytes
         bytes = ipaddress.ip_address(unicode(ip)).packed
         
@@ -39,7 +42,10 @@ class BloomFilter:
         self.bloom[index1 / 8] |= 0x01 << (index1 % 8)
         self.bloom[index2 / 8] |= 0x01 << (index2 % 8)
         
-    def countZeroBits(self):
+    def _countZeroBits(self):
+        """
+        Count the number of zero bits in the bloom filter.
+        """
         # Convert bloom filter to bytes
         bytes = map("{0:08b}".format, self.bloom)
         
@@ -50,5 +56,8 @@ class BloomFilter:
         return sum(bytes)
         
     def estimate(self):
-        c = float(min(self.M-1, self.countZeroBits()))
+        """
+        Estimate the number of items in the bloom filter.
+        """
+        c = float(min(self.M-1, self._countZeroBits()))
         return math.log(c / self.M) / (self.K * math.log(1 - 1. / self.M))
