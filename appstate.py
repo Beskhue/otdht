@@ -18,6 +18,9 @@ class AppState:
     Class to hold the global application state.
     """
     def prepare():
+        """
+        Prepare the application state.
+        """
         thisNodeIP = config.NODE_IP
         thisNodePort = config.NODE_PORT
         thisNodeHash = Hash(sha1(config.NODE_ID_NAME).digest())
